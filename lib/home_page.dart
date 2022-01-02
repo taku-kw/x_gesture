@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:gesture_x_detector/gesture_x_detector.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,7 +28,7 @@ class _HomePageState extends State<HomePage> {
       height: size.height,
       child: Stack(
         children: [
-          XGestureDetector(
+          Listener(
             child: Container(
               color: Colors.greenAccent,
               child: SizedBox(
@@ -37,12 +36,7 @@ class _HomePageState extends State<HomePage> {
                 height: size.height,
               ),
             ),
-            onTap: (event) {
-              final x = event.localPos.dx;
-              final y = event.localPos.dy;
-              log("tap($x, $y)");
-              _setTapPos(x, y);
-            },
+            onPointerUp: _onPointerUp,
           ),
           Positioned(
             left: _tapX - 10,
@@ -59,5 +53,26 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  void _onPointerUp(PointerEvent event) {
+    // final x = event.localPos.dx;
+    // final y = event.localPos.dy;
+    final x = TapEvent.from(event).localPos.dx;
+    final y = TapEvent.from(event).localPos.dy;
+    log("tap($x, $y)");
+    _setTapPos(x, y);
+  }
+}
+
+@immutable
+class TapEvent {
+  final int pointer;
+  final Offset localPos;
+  final Offset position;
+  const TapEvent(this.localPos, this.position, this.pointer);
+
+  static from(PointerEvent event) {
+    return TapEvent(event.localPosition, event.position, event.pointer);
   }
 }
