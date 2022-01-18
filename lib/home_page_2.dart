@@ -80,16 +80,24 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 50,
             ),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              child: ElevatedButton(
-                child: const Icon(
-                  Icons.add,
-                  size: 40,
-                ),
-                onPressed: _incrementButtonTapCnt,
+            SizedBox(
+              width: 200,
+              height: 100,
+              child: Stack(
+                children: [
+                  ElevatedButton(
+                    child: const Icon(
+                      Icons.add,
+                      size: 40,
+                    ),
+                    onPressed: _incrementButtonTapCnt,
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: _incrementGestureDetectorTapCnt,
+                  ),
+                ],
               ),
-              onTap: _incrementGestureDetectorTapCnt,
             ),
             ElevatedButton(
               onPressed: _resetTapCnt,
